@@ -7,6 +7,11 @@ clientes = [
         "id": 1,
         "nome": "murilo",
         "cidade": "Curitiba"
+    },
+    {
+        "id": 2,
+        "nome": "carlinhos",
+        "cidade": "SP"
     }
 ]
 
@@ -14,13 +19,21 @@ clientes = [
 def listar_clientes():
     return jsonify(clientes)
 
+@app.get("/clientes/<int:id>")
+def buscar_cliente(id):
+    for cliente in clientes:
+        if cliente["id"] == id:
+            return jsonify(cliente)
+        
+    return {"erro": "Cliente não encontrado"}, 404
+
 @app.post("/clientes")
 def registrar_cliente():
 
     dados = request.get_json()
 
     novo = {
-        "id": len(clientes + 1),
+        "id": len(clientes) + 1,
         "nome": dados["nome"],
         "cidade": dados["cidade"]
     }
