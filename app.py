@@ -8,11 +8,12 @@ conn = sqlite3.connect(
     check_same_thread=False
 )
 conn.row_factory = sqlite3.Row
-cursor = conn.cursor()
 
 
 @app.get("/clientes")
 def listar_clientes():
+
+    cursor = conn.cursor()
 
     clientes = cursor.execute("""
         SELECT * FROM clientes
@@ -23,6 +24,8 @@ def listar_clientes():
 
 @app.get("/clientes/<int:id>")
 def buscar_cliente(id):
+
+    cursor = conn.cursor()
 
     cliente = cursor.execute("""
         SELECT *
@@ -38,6 +41,8 @@ def buscar_cliente(id):
 
 @app.post("/clientes")
 def registrar_cliente():
+
+    cursor = conn.cursor()
 
     dados = request.get_json()
 
@@ -59,6 +64,8 @@ def registrar_cliente():
 
 @app.put("/clientes/<int:id>")
 def atualizar_cliente(id):
+
+    cursor = conn.cursor()
 
     dados = request.get_json()
 
@@ -84,6 +91,8 @@ def atualizar_cliente(id):
 
 @app.delete("/clientes/<int:id>")
 def remover_cliente(id):
+
+    cursor = conn.cursor()
 
     cursor.execute("""
         DELETE FROM clientes
