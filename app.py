@@ -9,6 +9,11 @@ conn = sqlite3.connect(
 )
 conn.row_factory = sqlite3.Row
 
+connv = sqlite3.connect(
+    "otica.db",
+    check_same_thread=False
+)
+connv.row_factory = sqlite3.Row
 
 @app.get("/clientes")
 def listar_clientes():
@@ -38,6 +43,19 @@ def buscar_cliente(id):
 
     return jsonify(dict(cliente))
 
+@app.get("/vendas/<int:id>")
+def buscar_venda(id):
+
+    cursor = connv.cursor()
+
+    venda = cursor.execute(
+    """
+    SELECT *
+    FROM vendas 
+    WHERE ordemVenda = ? 
+    """, (id,)).fetchone()
+
+    return jsonify(dict(venda))
 
 @app.post("/clientes")
 def registrar_cliente():
